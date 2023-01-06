@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+        <script src="https://cdn.tailwindcss.com"></script>
+        <meta charset="UTF-8">
+        <title>Alpine Todo</title>
+    </head>
+    <body
+        x-data="{
+            todos: [
+              {
+                title: 'Bring out Trash',
+                isFinished: false,
+                date: new Date()
+              },
+              {
+                title: 'Buy Groceries',
+                isFinished: false,
+                date: new Date()
+              },
+              {
+                title: 'Try out Alpine.js!',
+                isFinished: false,
+                date: new Date()
+              }
+            ],
+            inputValue: '',
+            addTodo(event) {
+                event.preventDefault()
+                this.todos.push({
+                    title: this.inputValue,
+                    isFinished: false,
+                    date: new Date()
+                })
+                this.inputValue = ''
+            }
+        }"
+    >
+        <ul>
+            <template x-for="todo in todos">
+                <li class="flex gap-4">
+                    <h2 x-text="todo.title"></h2>
+                    <span>Tick</span>
+                </li>
+            </template>
+        </ul>
+        <form>
+            <input type="text" x-model:value="inputValue" class="border">
+            <button @click="addTodo($event)" class="border">Add Todo</button>
+        </form>
+    </body>
+</html>
