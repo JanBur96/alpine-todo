@@ -5,24 +5,25 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <meta charset="UTF-8" />
     <title>Alpine Todo</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
   </head>
   <body class="h-screen w-screen flex justify-center items-center"
     x-data="{
             todos: [
               {
-                id: 0,
+                id: Math.floor(Math.random() * 100),
                 title: 'Bring out Trash',
                 isFinished: false,
                 date: new Date()
               },
               {
-                id: 1,
+                id: Math.floor(Math.random() * 100),
                 title: 'Buy Groceries',
                 isFinished: false,
                 date: new Date()
               },
               {
-                id: 2,
+                id: Math.floor(Math.random() * 100),
                 title: 'Try out Alpine.js!',
                 isFinished: false,
                 date: new Date()
@@ -43,7 +44,12 @@
               const todo = this.todos.find((todo) => {
                 return todo.id === todoToFinish
               })
-              todo.isFinished = true;
+              todo.isFinished = !todo.isFinished;
+            },
+            deleteTodo(todoToDelete) {
+              this.todos = this.todos.filter((todo) => {
+                return todo.id !== todoToDelete;
+              })
             }
         }"
   >
@@ -53,17 +59,20 @@
           Alpine Todo
         </h1>
       </header>
-      <ul class="my-4 py-2 px-4 flex flex-col gap-6">
+      <ul class="my-4 py-2 px-4 flex flex-col gap-4">
         <template x-for="todo in todos">
-          <li class="flex gap-4 border-b">
-            <h2 x-text="todo.title"></h2>
-            <span @click="finishTodo(todo.id)">Tick</span>
+          <li class="flex items-center justify-between border-b p-2">
+            <h2 x-text="todo.title" :class="todo.isFinished? 'line-through' : ''"></h2>
+            <div>
+              <button @click="finishTodo(todo.id)" class="bg-green-500 text-sm rounded text-white py-1 px-2">Done</button>
+              <button @click="deleteTodo(todo.id)" class="bg-red-500 text-sm rounded text-white py-1 px-2">Delete</button>
+            </div>
           </li>
         </template>
       </ul>
       <form class="py-2 px-4">
-        <input type="text" x-model:value="inputValue" class="border" />
-        <button @click="addTodo($event)" class="border">Add Todo</button>
+        <input type="text" x-model:value="inputValue" class="border rounded px-2 py-1" />
+        <button @click="addTodo($event)" class="border rounded bg-blue-500 text-white px-2 py-1">Add Todo</button>
       </form>
     </div>
   </body>
