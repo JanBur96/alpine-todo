@@ -1,25 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
-        <script src="https://cdn.tailwindcss.com"></script>
-        <meta charset="UTF-8">
-        <title>Alpine Todo</title>
-    </head>
-    <body
-        x-data="{
+  <head>
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <meta charset="UTF-8" />
+    <title>Alpine Todo</title>
+  </head>
+  <body class="h-screen w-screen flex justify-center items-center"
+    x-data="{
             todos: [
               {
+                id: 0,
                 title: 'Bring out Trash',
                 isFinished: false,
                 date: new Date()
               },
               {
+                id: 1,
                 title: 'Buy Groceries',
                 isFinished: false,
                 date: new Date()
               },
               {
+                id: 2,
                 title: 'Try out Alpine.js!',
                 isFinished: false,
                 date: new Date()
@@ -29,25 +32,39 @@
             addTodo(event) {
                 event.preventDefault()
                 this.todos.push({
+                    id: Math.floor(Math.random() * 100),
                     title: this.inputValue,
                     isFinished: false,
                     date: new Date()
                 })
                 this.inputValue = ''
+            },
+            finishTodo(todoToFinish) {
+              const todo = this.todos.find((todo) => {
+                return todo.id === todoToFinish
+              })
+              todo.isFinished = true;
             }
         }"
-    >
-        <ul>
-            <template x-for="todo in todos">
-                <li class="flex gap-4">
-                    <h2 x-text="todo.title"></h2>
-                    <span>Tick</span>
-                </li>
-            </template>
-        </ul>
-        <form>
-            <input type="text" x-model:value="inputValue" class="border">
-            <button @click="addTodo($event)" class="border">Add Todo</button>
-        </form>
-    </body>
+  >
+    <div class="max-w-6xl m-auto border border-blue-500 rounded">
+      <header class="bg-blue-500 text-white h-16 flex items-center justify-center text-2xl">
+        <h1>
+          Alpine Todo
+        </h1>
+      </header>
+      <ul class="my-4 py-2 px-4 flex flex-col gap-6">
+        <template x-for="todo in todos">
+          <li class="flex gap-4 border-b">
+            <h2 x-text="todo.title"></h2>
+            <span @click="finishTodo(todo.id)">Tick</span>
+          </li>
+        </template>
+      </ul>
+      <form class="py-2 px-4">
+        <input type="text" x-model:value="inputValue" class="border" />
+        <button @click="addTodo($event)" class="border">Add Todo</button>
+      </form>
+    </div>
+  </body>
 </html>
